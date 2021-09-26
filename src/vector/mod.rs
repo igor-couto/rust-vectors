@@ -2,6 +2,8 @@ mod test;
 
 use std::ops::{Add, Sub};
 
+use glam::Vec2;
+
 pub struct Vector {
     x: f32,
     y: f32,
@@ -48,6 +50,10 @@ impl Vector {
         let mag = self.mag();
         self.x /= mag;
         self.y /= mag;
+    }
+
+    pub fn toVec2(&self) -> Vec2 {
+        Vec2::new(self.x, self.y)
     }
 }
 
