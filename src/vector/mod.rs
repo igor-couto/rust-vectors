@@ -43,6 +43,12 @@ impl Vector {
     pub fn mag(&self) -> f32 {
         (self.x.powf(2f32) + self.y.powf(2f32)).sqrt()
     }
+
+    pub fn normalize(&mut self) {
+        let mag = self.mag();
+        self.x /= mag;
+        self.y /= mag;
+    }
 }
 
 impl Add for Vector {

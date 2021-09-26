@@ -77,3 +77,12 @@ fn should_calculate_magnitude() {
 
     assert_eq!(vector.mag(), 5f32);
 }
+
+#[test]
+fn should_normalize() {
+    let mut vector = Vector::new(4f32, 3f32);
+
+    vector.normalize();
+
+    assert!(vector.mag() == 1.0 && vector.x == 4.0 / 5.0 && vector.y == 3.0 / 5.0);
+}
