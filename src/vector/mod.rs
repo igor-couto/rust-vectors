@@ -52,7 +52,7 @@ impl Vector {
         self.y /= mag;
     }
 
-    pub fn toVec2(&self) -> Vec2 {
+    pub fn to_vec2(&self) -> Vec2 {
         Vec2::new(self.x, self.y)
     }
 }
