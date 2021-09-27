@@ -3,7 +3,7 @@
 mod vector;
 
 use ggez::event;
-use ggez::graphics::{self, Color, DrawParam};
+use ggez::graphics::{self, Color, DrawParam, Mesh};
 use ggez::{Context, GameResult};
 
 pub fn main() -> GameResult {
@@ -19,32 +19,24 @@ struct MainState {
 
 impl MainState {
     fn new(ctx: &mut Context) -> GameResult<MainState> {
-        let meshes = vec![build_mesh(ctx)?];
-        let s = MainState { meshes };
+        let mut meshes: Vec<Mesh> = Vec::new();
+        meshes.push(create_vector(ctx, 0.0, 0.0)?);
 
-        Ok(s)
+        let main_state = MainState { meshes };
+        Ok(main_state)
     }
 }
 
-fn build_mesh(ctx: &mut Context) -> GameResult<graphics::Mesh> {
+fn create_vector(ctx: &mut Context, x: f32, y: f32) -> GameResult<graphics::Mesh> {
     let mb = &mut graphics::MeshBuilder::new();
 
     mb.line(
         &[
-            vector::Vector::origin().toVec2(),
-            vector::Vector::new(400.0, 200.0).toVec2(),
+            vector::Vector::origin().to_vec2(),
+            vector::Vector::new(x + 1.0, y + 1.0).to_vec2(), // why only works when add + something or other vec?
         ],
-        4.0,
+        3.0,
         Color::new(0.37, 0.82, 0.95, 1.0),
-    )?;
-
-    mb.line(
-        &[
-            vector::Vector::origin().toVec2(),
-            vector::Vector::new(10.0, 30.0).toVec2(),
-        ],
-        4.0,
-        Color::new(1.00, 0.45, 0.45, 1.0),
     )?;
 
     mb.build(ctx)
@@ -52,8 +44,9 @@ fn build_mesh(ctx: &mut Context) -> GameResult<graphics::Mesh> {
 
 impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, ctx: &mut Context) -> GameResult {
-        ctx.mouse_context.reset_delta();
+        let mouse_position = ggez::input::mouse::position(&ctx);
 
+        self.meshes[0] = create_vector(ctx, mouse_position.x + 1.0, mouse_position.y + 1.0)?;
         Ok(())
     }
 
